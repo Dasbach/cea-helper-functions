@@ -10,16 +10,16 @@
 #' @return the function returns a data frame of adjusted health state counts by cycle that can be used to estimate cumulative outcomes
 #' 
 
-correct_state_counts <- function (x, ...) {
-  UseMethod("correct_state_counts", x)
+# think about developing a function factory ?
+correct_state_counts <- function (x, method=c("simpsons_rule","half_cycle")) {
+  method <- match.arg(method)
+  function_name <- paste("correct_state_counts_", method, sep="")
+  get(function_name)(x)
 }
 
-correct_state_counts.simpsons_rule <- correct_state_counts_simpsons_rule 
-correct_state_counts.half_cycle <- correct_state_counts_half_cycle
-
-#' 
-#' Simpsons Rule for adjusting counts
-#' 
+# 
+# Simpsons Rule for adjusting counts
+# 
 
 correct_state_counts_simpsons_rule <- function(state_counts) {
   
@@ -49,9 +49,9 @@ correct_state_counts_simpsons_rule <- function(state_counts) {
   state_corrected_counts
 }
 
-#'
-#' Half Cycle for adjusting counts
-#' 
+#
+# Half Cycle for adjusting counts
+# 
 
 correct_state_counts_half_cycle <- function(state_counts) {
   
